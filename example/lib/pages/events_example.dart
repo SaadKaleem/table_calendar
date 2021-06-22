@@ -103,6 +103,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: CalendarStyle(
               // Use `CalendarStyle` to customize the UI
+              cellMargin: EdgeInsets.all(2.0),
               outsideDaysVisible: false,
             ),
             onDaySelected: _onDaySelected,

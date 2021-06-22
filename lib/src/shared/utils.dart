@@ -8,6 +8,8 @@ typedef DayBuilder = Widget? Function(BuildContext context, DateTime day);
 
 /// Signature for a function that creates a widget for a given `day`.
 /// Additionally, contains the currently focused day.
+/// 
+/// TODO: Change this typedef to have the data (minutes of sleep) for current day 
 typedef FocusedDayBuilder = Widget? Function(
     BuildContext context, DateTime day, DateTime focusedDay);
 

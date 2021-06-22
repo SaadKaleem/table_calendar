@@ -197,6 +197,7 @@ class TableCalendar<T> extends StatefulWidget {
   final void Function(PageController pageController)? onCalendarCreated;
 
   /// Creates a `TableCalendar` widget.
+  /// These are all the instance attributes of the Stateful Widget
   TableCalendar({
     Key? key,
     required DateTime focusedDay,
@@ -465,6 +466,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
               );
             },
           ),
+        //TableCalenderBase Start
         Flexible(
           flex: widget.shouldFillViewport ? 1 : 0,
           child: TableCalendarBase(
@@ -533,7 +535,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
       ],
     );
   }
-
+  //TODO: Pass in data (minutes in sleep) to this function
   Widget _buildCell(DateTime day, DateTime focusedDay) {
     final isOutside = day.month != focusedDay.month;
 
@@ -584,6 +586,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
 
+        //TODO: Pass data to CellCount() object
         Widget content = CellContent(
           day: day,
           focusedDay: focusedDay,

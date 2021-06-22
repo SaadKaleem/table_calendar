@@ -204,6 +204,7 @@ class CalendarStyle {
     this.weekendTextStyle = const TextStyle(color: const Color(0xFF5A5A5A)),
     this.weekendDecoration = const BoxDecoration(shape: BoxShape.circle),
     this.defaultTextStyle = const TextStyle(),
+    //TODO: Add default decorations based on "Red/Orange/Light Yellow/Green/NULL"
     this.defaultDecoration = const BoxDecoration(shape: BoxShape.circle),
     this.rowDecoration = const BoxDecoration(),
   });
