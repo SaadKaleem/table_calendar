@@ -37,7 +37,15 @@ class _TableEventsExampleState extends State<TableEventsExample> {
 
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
-    return kEvents[day] ?? [];
+    return kEvents2[day] ?? [];
+  }
+
+  int? _getSleepDurationForDay(DateTime day) {
+    print("Date");
+    print(DateTime.utc(day.year, day.month, day.day));
+    print(kSleeps2[DateTime.utc(day.year, day.month, day.day)]);
+
+    return kSleeps2[DateTime.utc(day.year, day.month, day.day)] ?? 0;
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
@@ -49,6 +57,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
     ];
   }
 
+  //When a new day is selected, then update the state and retrieve it's events. 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
@@ -86,38 +95,67 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Events'),
+        title: Text('Sleep History'),
+        backgroundColor: Color(0xff1a47a2),
       ),
       body: Column(
         children: [
-          TableCalendar<Event>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              cellMargin: EdgeInsets.all(2.0),
-              outsideDaysVisible: false,
+          Card(
+            clipBehavior: Clip.antiAlias,
+            margin: const EdgeInsets.all(8.0),
+            child: TableCalendar<Event>(
+              firstDay: kFirstDay,
+              lastDay: kLastDay,
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+              rangeStartDay: _rangeStart,
+              rangeEndDay: _rangeEnd,
+              calendarFormat: _calendarFormat,
+              rangeSelectionMode: _rangeSelectionMode,
+              eventLoader: _getEventsForDay,
+              sleepDurationLoader: _getSleepDurationForDay,
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              headerStyle: HeaderStyle(
+                decoration: BoxDecoration(
+                  color: Color(0xff1a47a2),
+                ),
+                headerMargin: const EdgeInsets.only(bottom: 8.0),
+                titleTextStyle: TextStyle(
+                  color: Colors.white,
+                ),
+                formatButtonDecoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                formatButtonTextStyle: TextStyle(color: Colors.white),
+                leftChevronIcon: Icon(
+                  Icons.chevron_left,
+                  color: Colors.white,
+                ),
+                rightChevronIcon: Icon(
+                  Icons.chevron_right,
+                  color: Colors.white,
+                ),
+              ),
+              calendarStyle: CalendarStyle(
+                // Use `CalendarStyle` to customize the UI
+                cellMargin: EdgeInsets.all(2.0),
+                outsideDaysVisible: false,
+                isTodayHighlighted: false,
+              ),
+              onDaySelected: _onDaySelected,
+              onRangeSelected: _onRangeSelected,
+              onFormatChanged: (format) {
+                if (_calendarFormat != format) {
+                  setState(() {
+                    _calendarFormat = format;
+                  });
+                }
+              },
+              onPageChanged: (focusedDay) {
+                _focusedDay = focusedDay;
+              },
             ),
-            onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
           ),
           const SizedBox(height: 8.0),
           Expanded(

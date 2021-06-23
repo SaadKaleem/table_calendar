@@ -156,6 +156,9 @@ class TableCalendar<T> extends StatefulWidget {
   /// Function that assigns a list of events to a specified day.
   final List<T> Function(DateTime day)? eventLoader;
 
+  /// Function that assigns a sleep duration to a specified day.
+  final int? Function(DateTime day)? sleepDurationLoader;
+
   /// Function deciding whether given day should be enabled or not.
   /// If `false` is returned, this day will be disabled.
   final bool Function(DateTime day)? enabledDayPredicate;
@@ -238,6 +241,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.calendarBuilders = const CalendarBuilders(),
     this.rangeSelectionMode = RangeSelectionMode.toggledOff,
     this.eventLoader,
+    this.sleepDurationLoader,
     this.enabledDayPredicate,
     this.selectedDayPredicate,
     this.holidayPredicate,
@@ -535,7 +539,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
       ],
     );
   }
-  //TODO: Pass in data (minutes in sleep) to this function
+
   Widget _buildCell(DateTime day, DateTime focusedDay) {
     final isOutside = day.month != focusedDay.month;
 
@@ -586,7 +590,12 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
 
-        //TODO: Pass data to CellCount() object
+
+
+        final sleepDuration = widget.sleepDurationLoader?.call(day) ?? 0;
+        // print('sleep duration: $sleepDuration');
+        final sleepThreshold = assignThreshold(sleepDuration);
+
         Widget content = CellContent(
           day: day,
           focusedDay: focusedDay,
@@ -602,6 +611,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           isDisabled: isDisabled,
           isWeekend: isWeekend,
           isHoliday: widget.holidayPredicate?.call(day) ?? false,
+          sleepThreshold: sleepThreshold,
         );
 
         children.add(content);

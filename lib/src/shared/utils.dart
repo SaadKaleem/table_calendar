@@ -8,8 +8,7 @@ typedef DayBuilder = Widget? Function(BuildContext context, DateTime day);
 
 /// Signature for a function that creates a widget for a given `day`.
 /// Additionally, contains the currently focused day.
-/// 
-/// TODO: Change this typedef to have the data (minutes of sleep) for current day 
+
 typedef FocusedDayBuilder = Widget? Function(
     BuildContext context, DateTime day, DateTime focusedDay);
 
@@ -53,4 +52,20 @@ bool isSameDay(DateTime? a, DateTime? b) {
   }
 
   return a.year == b.year && a.month == b.month && a.day == b.day;
+}
+
+//0: default/null, 1: red, 2: orange, 3: yellow, 4: green.
+
+int assignThreshold(int sleepDuration) {
+  if (sleepDuration >= 480) {
+    return 4;
+  } else if (sleepDuration >= 360) {
+    return 3;
+  } else if (sleepDuration >= 240) {
+    return 2;
+  } else if (sleepDuration > 0) {
+    return 1;
+  } else {
+    return 0;
+  }
 }

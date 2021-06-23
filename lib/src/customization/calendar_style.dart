@@ -74,6 +74,8 @@ class CalendarStyle {
   /// TextStyle for day cells that are currently marked as selected by `selectedDayPredicate`.
   final TextStyle selectedTextStyle;
 
+  final TextStyle sleepCodedTextStyle;
+
   /// Decoration for day cells that are currently marked as selected by `selectedDayPredicate`.
   final Decoration selectedDecoration;
 
@@ -133,6 +135,11 @@ class CalendarStyle {
   /// Decoration for day cells that do not match any other styles.
   final Decoration defaultDecoration;
 
+  final Decoration redDecoration;
+  final Decoration orangeDecoration;
+  final Decoration yellowDecoration;
+  final Decoration greenDecoration;
+
   /// Decoration for each interior row of day cells.
   final Decoration rowDecoration;
 
@@ -160,6 +167,9 @@ class CalendarStyle {
       color: const Color(0xFFFAFAFA),
       fontSize: 16.0,
     ), //
+    this.sleepCodedTextStyle = const TextStyle(
+      color: const Color(0xFFFAFAFA)
+    ),
     this.todayDecoration = const BoxDecoration(
       color: const Color(0xFF9FA8DA),
       shape: BoxShape.circle,
@@ -204,9 +214,24 @@ class CalendarStyle {
     this.weekendTextStyle = const TextStyle(color: const Color(0xFF5A5A5A)),
     this.weekendDecoration = const BoxDecoration(shape: BoxShape.circle),
     this.defaultTextStyle = const TextStyle(),
-    //TODO: Add default decorations based on "Red/Orange/Light Yellow/Green/NULL"
     this.defaultDecoration = const BoxDecoration(shape: BoxShape.circle),
     this.rowDecoration = const BoxDecoration(),
+    this.redDecoration = const BoxDecoration(
+      color: const Color(0xFFE3464E),
+      shape: BoxShape.circle,
+    ),
+    this.orangeDecoration = const BoxDecoration(
+      color: const Color(0xFFE4962D),
+      shape: BoxShape.circle,
+    ),
+    this.yellowDecoration = const BoxDecoration(
+      color: const Color(0xFFEFB40D),
+      shape: BoxShape.circle,
+    ),
+    this.greenDecoration = const BoxDecoration(
+      color: const Color(0xFF20a432),
+      shape: BoxShape.circle,
+    ),
   });
 }
 
