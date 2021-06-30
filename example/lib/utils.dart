@@ -75,6 +75,18 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
   );
 }
 
+// final kNow = DateTime.parse('2021-01-17');
 final kNow = DateTime.now();
-final kFirstDay = DateTime(kNow.year, kNow.month - 3, kNow.day);
-final kLastDay = DateTime(kNow.year, kNow.month, kNow.day);
+final kFirstDay = DateTime(kNow.year, kNow.month - 1, kNow.day);
+final kLastDay = DateTime(kNow.year, kNow.month + 1, kNow.day);
+
+DateTime beginingOfDay(date) => DateTime(date.year,date.month,date.day,0,0,0);
+
+DateTime endOfDay(date) => DateTime(date.year,date.month,date.day,23,59,59);
+
+DateTime lastDayOfMonth(DateTime month) {
+    var beginningNextMonth = (month.month < 12)
+        ? new DateTime(month.year, month.month + 1, 1)
+        : new DateTime(month.year + 1, 1, 1);
+    return beginningNextMonth.subtract(new Duration(days: 1));
+  }

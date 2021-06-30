@@ -21,8 +21,7 @@ class CellContent extends StatelessWidget {
   final bool isWeekend;
   final CalendarStyle calendarStyle;
   final CalendarBuilders calendarBuilders;
-  final int sleepThreshold;
-  
+
   const CellContent({
     Key? key,
     required this.day,
@@ -39,7 +38,6 @@ class CellContent extends StatelessWidget {
     required this.isDisabled,
     required this.isHoliday,
     required this.isWeekend,
-    required this.sleepThreshold,
   }) : super(key: key);
 
   @override
@@ -128,45 +126,6 @@ class CellContent extends StatelessWidget {
             decoration: calendarStyle.outsideDecoration,
             alignment: Alignment.center,
             child: Text(text, style: calendarStyle.outsideTextStyle),
-          );
-    } else if (sleepThreshold == 1) {//0: default/null, 1: red, 2: orange, 3: yellow, 4: green.
-          cell = 
-          AnimatedContainer(
-            duration: duration,
-            margin: margin,
-            decoration: calendarStyle.redDecoration,
-            alignment: Alignment.center,
-            child: Text(text, style: calendarStyle.sleepCodedTextStyle),
-          );
-    } else if (sleepThreshold == 2) {
-          cell = 
-          AnimatedContainer(
-            duration: duration,
-            margin: margin,
-            decoration: calendarStyle.orangeDecoration,
-            alignment: Alignment.center,
-            child: Text(text, style: calendarStyle.sleepCodedTextStyle),
-          );
-      
-    } else if (sleepThreshold == 3) {
-          cell = 
-          AnimatedContainer(
-            duration: duration,
-            margin: margin,
-            decoration: calendarStyle.yellowDecoration,
-            alignment: Alignment.center,
-            child: Text(text, style: calendarStyle.sleepCodedTextStyle),
-          );
-      
-    } else if (sleepThreshold == 4) {
-      print(sleepThreshold);
-          cell = 
-          AnimatedContainer(
-            duration: duration,
-            margin: margin,
-            decoration: calendarStyle.greenDecoration,
-            alignment: Alignment.center,
-            child: Text(text, style: calendarStyle.sleepCodedTextStyle),
           );
     } else {
       cell = calendarBuilders.defaultBuilder?.call(context, day, focusedDay) ??

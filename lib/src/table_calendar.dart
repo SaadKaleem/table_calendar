@@ -56,6 +56,11 @@ class TableCalendar<T> extends StatefulWidget {
   /// Days after it will use `disabledStyle` and trigger `onDisabledDayTapped` callback.
   final DateTime lastDay;
 
+  /// DateTime that will be treated as today. Defaults to `DateTime.now()`.
+  ///
+  /// Overriding this property might be useful for testing.
+  final DateTime? currentDay;
+
   /// List of days treated as weekend days.
   /// Use built-in `DateTime` weekday constants (e.g. `DateTime.monday`) instead of `int` literals (e.g. `1`).
   final List<int> weekendDays;
@@ -156,9 +161,6 @@ class TableCalendar<T> extends StatefulWidget {
   /// Function that assigns a list of events to a specified day.
   final List<T> Function(DateTime day)? eventLoader;
 
-  /// Function that assigns a sleep duration to a specified day.
-  final int? Function(DateTime day)? sleepDurationLoader;
-
   /// Function deciding whether given day should be enabled or not.
   /// If `false` is returned, this day will be disabled.
   final bool Function(DateTime day)? enabledDayPredicate;
@@ -200,12 +202,12 @@ class TableCalendar<T> extends StatefulWidget {
   final void Function(PageController pageController)? onCalendarCreated;
 
   /// Creates a `TableCalendar` widget.
-  /// These are all the instance attributes of the Stateful Widget
   TableCalendar({
     Key? key,
     required DateTime focusedDay,
     required DateTime firstDay,
     required DateTime lastDay,
+    DateTime? currentDay,
     this.locale,
     this.rangeStartDay,
     this.rangeEndDay,
@@ -241,7 +243,6 @@ class TableCalendar<T> extends StatefulWidget {
     this.calendarBuilders = const CalendarBuilders(),
     this.rangeSelectionMode = RangeSelectionMode.toggledOff,
     this.eventLoader,
-    this.sleepDurationLoader,
     this.enabledDayPredicate,
     this.selectedDayPredicate,
     this.holidayPredicate,
@@ -264,6 +265,7 @@ class TableCalendar<T> extends StatefulWidget {
         focusedDay = normalizeDate(focusedDay),
         firstDay = normalizeDate(firstDay),
         lastDay = normalizeDate(lastDay),
+        currentDay = currentDay ?? DateTime.now(),
         super(key: key);
 
   @override
@@ -470,7 +472,6 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
               );
             },
           ),
-        //TableCalenderBase Start
         Flexible(
           flex: widget.shouldFillViewport ? 1 : 0,
           child: TableCalendarBase(
@@ -586,15 +587,9 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           children.add(rangeHighlight);
         }
 
-        final isToday = isSameDay(day, DateTime.now());
+        final isToday = isSameDay(day, widget.currentDay);
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
-
-
-
-        final sleepDuration = widget.sleepDurationLoader?.call(day) ?? 0;
-        // print('sleep duration: $sleepDuration');
-        final sleepThreshold = assignThreshold(sleepDuration);
 
         Widget content = CellContent(
           day: day,
@@ -611,7 +606,6 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           isDisabled: isDisabled,
           isWeekend: isWeekend,
           isHoliday: widget.holidayPredicate?.call(day) ?? false,
-          sleepThreshold: sleepThreshold,
         );
 
         children.add(content);
@@ -627,6 +621,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             final markerSize = widget.calendarStyle.markerSize ??
                 (shorterSide - widget.calendarStyle.cellMargin.vertical) *
                     widget.calendarStyle.markerSizeScale;
+                    
+
 
             final markerAutoAlignmentTop = center +
                 (shorterSide - widget.calendarStyle.cellMargin.vertical) / 2 -
@@ -654,7 +650,6 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
               ),
             );
           }
-
           if (markerWidget != null) {
             children.add(markerWidget);
           }
@@ -674,11 +669,11 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   Widget _buildSingleMarker(DateTime day, T event, double markerSize) {
     return widget.calendarBuilders.singleMarkerBuilder
             ?.call(context, day, event) ??
-        Container(
-          width: markerSize,
-          height: markerSize,
-          margin: widget.calendarStyle.markerMargin,
-          decoration: widget.calendarStyle.markerDecoration,
+          Container(
+            width: markerSize,
+            height: markerSize,
+            margin: widget.calendarStyle.markerMargin,
+            decoration: widget.calendarStyle.markerDecoration,
         );
   }
 

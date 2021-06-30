@@ -82,8 +82,8 @@ class HeaderStyle {
   /// Creates a `HeaderStyle` used by `TableCalendar` widget.
   const HeaderStyle({
     this.titleCentered = false,
-    this.formatButtonVisible = true,
-    this.formatButtonShowsNext = true,
+    this.formatButtonVisible = false,
+    this.formatButtonShowsNext = false,
     this.titleTextFormatter,
     this.titleTextStyle = const TextStyle(fontSize: 17.0),
     this.formatButtonTextStyle = const TextStyle(),

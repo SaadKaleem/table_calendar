@@ -74,13 +74,13 @@ class CalendarCore extends StatelessWidget {
           dowVisible: dowVisible,
           dowDecoration: dowDecoration,
           rowDecoration: rowDecoration,
-          dowBuilder: (context, day) { //day of the weeks
+          dowBuilder: (context, day) {
             return SizedBox(
               height: dowHeight,
               child: dowBuilder?.call(context, day),
             );
           },
-          dayBuilder: (context, day) { //days themselves
+          dayBuilder: (context, day) {
             DateTime baseDay;
             final previousFocusedDay = focusedDay;
             if (previousFocusedDay == null || previousIndex == null) {
